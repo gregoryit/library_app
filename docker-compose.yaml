@@ -1,0 +1,34 @@
+version: '1'
+
+services:
+
+  database: #Имя сервиса
+    container_name: db #Имя с которым запустится контейнер
+    hostname: db #Имя "хоста" которым будет считать себя контейнер
+    image: mysql #Образ из которого запускается контейнер
+    volumes: #Подключаемые директории
+      - ./mysql:/var/lib/mysql #Директории вида хост_директория:директория_контейнера
+    environment: #переменные окружения
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'user'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports: # Сопоставление портов хост-машины и контейнера
+      - '3306:3306'
+    expose:
+      - '3306'
+    restart: unless-stopped #условие для рестарта в случае остановки контейнера
+
+
+  app:
+    container_name: library_app
+    hostname: library_app
+    build: # Параметры для сборки приложения
+      context: ./src # Каталог, используемый для сборки
+      dockerfile: Dockerfile # Файл, используемый для сборки образа приложения
+
+    volumes:
+      - ./src/:/usr/src/app/
+    # restart: unless-stopped
+    depends_on: # Указание на зависимость сервиса от другого сервиса
+      - database
