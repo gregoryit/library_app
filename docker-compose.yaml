@@ -26,7 +26,8 @@ services:
     build: # Параметры для сборки приложения
       context: ./src # Каталог, используемый для сборки
       dockerfile: Dockerfile # Файл, используемый для сборки образа приложения
-
+    environment: #переменные окружения
+      MYSQL_PASSWORD: 'root'
     volumes:
       - ./src/:/usr/src/app/
     # restart: unless-stopped
