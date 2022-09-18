@@ -33,3 +33,5 @@ services:
     # restart: unless-stopped
     depends_on: # Указание на зависимость сервиса от другого сервиса
       - database
+    stdin_open: true
+    tty: true
