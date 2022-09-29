@@ -3,6 +3,8 @@ import mysql.connector
 import os
 from time import sleep
 
+#test teamcity
+
 while True:
     try:
         mydb = mysql.connector.connect(
