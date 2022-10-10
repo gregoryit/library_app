@@ -27,7 +27,7 @@ try:
                     PRIMARY KEY (idbooks));
                     """)
 except:
-    print('error')
+    print('error!!!')
 
 while True:
     book = input('Какую книгу вы хотите добавить? ')
