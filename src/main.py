@@ -3,7 +3,7 @@ import mysql.connector
 import os
 from time import sleep
 
-#test teamcity7
+#test teamcity8
 
 while True:
     try:
