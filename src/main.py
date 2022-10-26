@@ -3,19 +3,20 @@ import mysql.connector
 import os
 from time import sleep
 
-#test teamcity13
+# test teamcity13
+
+# password= 'hello_password'
 
 while True:
     try:
         mydb = mysql.connector.connect(
-        host="db",
-        user="root",
-        password=os.environ['MYSQL_PASSWORD'],
-        database='db'
+            host="db",
+            user="root",
+            password=os.environ['MYSQL_PASSWORD'],
+            database='db'
         )
         break
-    except:
-
+    except BaseException:
         print('Connection failed. Try again..')
         sleep(1)
 
@@ -26,13 +27,12 @@ try:
                     title VARCHAR(45) NULL,
                     PRIMARY KEY (idbooks));
                     """)
-except:
+except BaseException:
     print('error!!!')
 
 while True:
     book = input('Какую книгу вы хотите добавить? ')
-    cursor.execute(f""" INSERT INTO books (title) VALUES ('{book}');
-                """)
+    cursor.execute("INSERT INTO books (title) VALUES (%s);", book)
     mydb.commit()
     cursor.execute('select * from books')
     res = cursor.fetchall()
