@@ -8,5 +8,5 @@ with open('out.json', 'r') as f:
     b = json.load(f)
 
 if b['results'] or a:
-    raise
+    raise MyException('ошибочка')
 
