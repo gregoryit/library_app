@@ -10,7 +10,7 @@ from time import sleep
 while True:
     try:
         mydb = mysql.connector.connect(
-        host="db",
+            host="db",
             user="root",
             password=os.environ['MYSQL_PASSWORD'],
             database='db'
