@@ -2,6 +2,8 @@
 import mysql.connector
 import os
 from time import sleep
+from consts import sql_request
+from utils import *
 
 # test teamcity14
 
@@ -14,26 +16,39 @@ while True:
             user="root",
             password=os.environ['MYSQL_PASSWORD'],
             database='db'
-        )
+                )
         break
     except BaseException:
         print('Connection failed. Try again..')
         sleep(1)
 
-cursor = mydb.cursor()
-try:
-    cursor.execute("""CREATE TABLE books (
-                    idbooks INT NOT NULL AUTO_INCREMENT,
-                    title VARCHAR(45) NULL,
-                    PRIMARY KEY (idbooks));
-                    """)
-except BaseException:
-    print('error!!!')
+cursor = mydb.cursor(prepared=True)
+for req in sql_request:
+    try:
+        cursor.execute(req)
+
+    except BaseException:
+        print('error!!!', req)
+
+
+text = '''Возможности приложения:
+1 - добавление
+2 - удаление
+3 - изменение
+4 - книгу к факультету
+'''
 
 while True:
-    book = input('Какую книгу вы хотите добавить? ')
-    cursor.execute("INSERT INTO books (title) VALUES (%s);", book)
+    print(text)
+    for i in tables:
+        print(show_all(cursor, i))
+    com = input()
+    if com == '1':
+        print(add_smth_console(cursor))
+    elif com == '2':
+        print(del_smth_console(cursor))
+    elif com == '3':
+        print(upd_smth_console(cursor))
+    elif com == '4':
+        print(many_relations_console(cursor))
     mydb.commit()
-    cursor.execute('select * from books')
-    res = cursor.fetchall()
-    print(res)
