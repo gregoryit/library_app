@@ -17,7 +17,6 @@ MYSQL_PORT = 3306
 
 
 class MockDB(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.cnx = mysql.connector.connect(
@@ -28,13 +27,12 @@ class MockDB(TestCase):
         )
         cls.cursor = cls.cnx.cursor()
 
-        # drop database if it already exists
-        try:
-            cls.cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
-            cls.cursor.close()
-            print("DB dropped")
-        except mysql.connector.Error as err:
-            print("{}{}".format(MYSQL_DB, err))
+        # try:
+        #     cls.cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
+        #     cls.cursor.close()
+        #     print("DB dropped")
+        # except mysql.connector.Error as err:
+        #     print("{}{}".format(MYSQL_DB, err))
 
         cls.cursor = cls.cnx.cursor()
         try:

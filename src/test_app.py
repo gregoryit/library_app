@@ -9,18 +9,10 @@ class TestUtils(MockDB):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.publisher = create(
-            cls.cursor,
-            'publishers',
-            1,
-            ('name_t_pub',)
-        )
-        cls.filial = create(
-            cls.cursor,
-            'filials',
-            2,
-            ('name_t_fil', 'addr_t_fil')
-        )
+        cls.publisher = create(cls.cursor, 'publishers',
+                               1, ('name_t_pub',))
+        cls.filial = create(cls.cursor, 'filials',
+                            2, ('name_t_fil', 'addr_t_fil'))
         cls.facility = create(cls.cursor, 'facilities', 1, ('name_t_fac',))
         cls.book = create(cls.cursor, 'books', 4,
                           ('title_t', 'author_t', 1, 1))
