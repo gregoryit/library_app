@@ -24,7 +24,7 @@ class MockDB(TestCase):
             host=MYSQL_HOST,
             user=MYSQL_USER,
             password=MYSQL_PASSWORD,
-            port = MYSQL_PORT
+            port=MYSQL_PORT
         )
         cls.cursor = cls.cnx.cursor()
 
@@ -39,7 +39,8 @@ class MockDB(TestCase):
         cls.cursor = cls.cnx.cursor()
         try:
             cls.cursor.execute(
-                "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(MYSQL_DB))
+                f"CREATE DATABASE {MYSQL_DB} DEFAULT CHARACTER SET 'utf8'"
+            )
         except mysql.connector.Error as err:
             print("Failed creating database: {}".format(err))
             exit(1)
@@ -57,8 +58,7 @@ class MockDB(TestCase):
         else:
             print("OK")
 
-
-        testconfig ={
+        testconfig = {
             'host': MYSQL_HOST,
             'user': MYSQL_USER,
             'password': MYSQL_PASSWORD,
@@ -80,9 +80,9 @@ class MockDB(TestCase):
 
         # drop test database
         try:
-            cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
+            cursor.execute(f"DROP DATABASE {MYSQL_DB}")
             cnx.commit()
             cursor.close()
         except mysql.connector.Error as err:
-            print("Database {} does not exists. Dropping db failed".format(MYSQL_DB))
+            print(f"Database {MYSQL_DB} does not exists.")
         cnx.close()

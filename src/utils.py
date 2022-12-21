@@ -6,13 +6,15 @@ def add_smth_console(cursor):
     ans = input('Что добавить?')
     if ans in tables.keys():
         print('Введите', *tables[ans][1:], 'через пробел')
-        values = input().split()    
+        values = input().split()
         add_smth(cursor, values, ans)
+
 
 def add_smth(cursor, values, ans):
     try:
         sss = ', '.join(['%s'] * (len(tables[ans])-1))
-        sql = f'INSERT INTO {ans} ({", ".join(tables[ans][1:]) }) VALUES ({sss});'
+        cols = ", ".join(tables[ans][1:])
+        sql = f'INSERT INTO {ans} ({cols}) VALUES ({sss});'
         values = [i if i != 'None' else None for i in values]
         cursor.execute(sql, tuple(values))
         sql = f'SELECT MAX(id) FROM {ans}'
@@ -21,19 +23,19 @@ def add_smth(cursor, values, ans):
         sql = f'SELECT * FROM {ans} WHERE id = %s'
         cursor.execute(sql, tuple([id_new]))
         return cursor.fetchall()[0]
-    except:
+    except Exception as e:
         print('Что-то пошло не так')
 
 
 def del_smth_console(cursor):
-        print(*tables.keys())
-        ans = input('Где удалить? ')
-        if ans in tables.keys():
-            print(f'Строки в таблице {ans}:')
-            print(show_all(cursor, ans))
-            print('Введите id для удаления')
-            id_del = input()
-            del_smth(cursor, id_del, ans)
+    print(*tables.keys())
+    ans = input('Где удалить? ')
+    if ans in tables.keys():
+        print(f'Строки в таблице {ans}:')
+        print(show_all(cursor, ans))
+        print('Введите id для удаления')
+        id_del = input()
+        del_smth(cursor, id_del, ans)
 
 
 def del_smth(cursor, id_del, ans):
@@ -44,7 +46,7 @@ def del_smth(cursor, id_del, ans):
         cursor.execute(sql, tuple([id_del]))
         result = cursor.fetchall()
         return result
-    except:
+    except Exception as e:
         print('Что-то пошло не так')
 
 
@@ -71,7 +73,7 @@ def upd_smth(cursor, ans, id_del, col, value):
         sql = f'SELECT * FROM {ans} WHERE id = %s'
         cursor.execute(sql, tuple([id_del]))
         return cursor.fetchall()[0]
-    except:
+    except Exception as e:
         print('Что-то пошло не так')
 
 
@@ -80,7 +82,7 @@ def many_relations_console(cursor):
     print(show_all(cursor, 'books'))
     print('Строки в таблице факультетов:')
     print(show_all(cursor, 'facilities'))
-    
+
     b = input('Какая книга? ')
     f = input('Какой филиал? ')
     many_relations(cursor, b, f)
@@ -90,8 +92,8 @@ def many_relations(cursor, b, f):
     try:
         sql = f'INSERT INTO books_facilities VALUES (%s, %s);'
         cursor.execute(sql, tuple([f, b]))
-    except:
-        print('Что-то пошло не так')    
+    except Exception as ex:
+        print('Что-то пошло не так')
 
 
 def show_all(cursor, tab):
@@ -101,7 +103,9 @@ def show_all(cursor, tab):
 
 
 def create(cursor, table, num, values):
-    sql = f'INSERT INTO {table} ({", ".join(tables[table][1:]) }) VALUES ({", ".join(["%s"] * num)});'
+    cols = ", ".join(tables[table][1:])
+    sss = ", ".join(["%s"] * num)
+    sql = f'INSERT INTO {table} ({cols}) VALUES ({sss});'
     cursor.execute(sql, values)
     sql = f'SELECT * FROM {table} WHERE id = 1'
     cursor.execute(sql)

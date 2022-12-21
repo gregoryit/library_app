@@ -9,19 +9,31 @@ class TestUtils(MockDB):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.publisher = create(cls.cursor, 'publishers', 1, ('name_t_pub',))
-        cls.filial = create(cls.cursor, 'filials', 2, ('name_t_fil', 'addr_t_fil'))
+        cls.publisher = create(
+            cls.cursor,
+            'publishers',
+            1,
+            ('name_t_pub',)
+        )
+        cls.filial = create(
+            cls.cursor,
+            'filials',
+            2,
+            ('name_t_fil', 'addr_t_fil')
+        )
         cls.facility = create(cls.cursor, 'facilities', 1, ('name_t_fac',))
-        cls.book = create(cls.cursor, 'books', 4, ('title_t', 'author_t', 1, 1))
+        cls.book = create(cls.cursor, 'books', 4,
+                          ('title_t', 'author_t', 1, 1))
         create(cls.cursor, 'publishers', 1, ('name_t_pub_deleting',))
-        create(cls.cursor, 'filials', 2, ('name_t_fil_deleting', 'addr_t_fil_deleting'))
+        create(cls.cursor, 'filials', 2,
+               ('name_t_fil_deleting', 'addr_t_fil_deleting'))
         create(cls.cursor, 'facilities', 1, ('name_t_fac_deleting',))
-        create(cls.cursor, 'books', 4, ('title_t_deleting', 'author_t_deleting', 1, 1))
+        create(cls.cursor, 'books', 4,
+               ('title_t_deleting', 'author_t_deleting', 1, 1))
 
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
-
 
     def test_add(self):
         tables = {
@@ -46,7 +58,6 @@ class TestUtils(MockDB):
             result = upd_smth(self.cursor, tab, 1, values[0], values[1])
             index = values[2]
             self.assertEqual(result[index], values[1])
-        
 
     def test_delete(self):
         tables_id = {
@@ -61,4 +72,4 @@ class TestUtils(MockDB):
 
 
 if __name__ == "__main__":
-  unittest.main()
+    unittest.main()
