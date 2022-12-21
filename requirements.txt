@@ -1,0 +1,8 @@
+mysql-connector-python==8.0.30
+bandit==1.7.4
+pycodestyle==2.9.1
+mock==4.0.3
+pytest==7.2.0
+python-dotenv==0.21.0
+teamcity-messages==1.32
+virtualenv==20.17.1
