@@ -5,10 +5,12 @@ from mock import patch
 import utils
 from consts import *
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 MYSQL_USER = "root"
-MYSQL_PASSWORD = os.environ['MYSQL_PASSWORD']
+MYSQL_PASSWORD = os.getenv['MYSQL_PASSWORD']
 MYSQL_DB = "testdb"
 MYSQL_HOST = "db"
 MYSQL_PORT = "3306"
