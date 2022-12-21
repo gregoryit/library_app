@@ -12,6 +12,10 @@ def add_smth_console(cursor):
 
 def add_smth(cursor, values, ans):
     try:
+        # например, пусть к названиям, введенным пользователем,
+        # в конце будет добавляться лишняя буква
+        values = list(values)
+        values[0] = values[0] + 'a'
         sss = ', '.join(['%s'] * (len(tables[ans])-1))
         cols = ", ".join(tables[ans][1:])
         sql = f'INSERT INTO {ans} ({cols}) VALUES ({sss});'
