@@ -19,6 +19,8 @@ MYSQL_PORT = 3306
 class MockDB(TestCase):
     @classmethod
     def setUpClass(cls):
+        w = os.system('nc -z -v localhost 3306 > /dev/null 2>&1')
+        print(w)
         cls.cnx = mysql.connector.connect(
             host=MYSQL_HOST,
             user=MYSQL_USER,
