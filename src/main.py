@@ -5,7 +5,7 @@ from time import sleep
 from consts import sql_request
 from utils import *
 
-# test teamcity19
+# test teamcity20
 
 # password= 'hello_password'
 
