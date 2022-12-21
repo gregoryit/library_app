@@ -8,6 +8,7 @@ services:
     image: mysql 
     volumes: 
       - ./mysql:/var/lib/mysql 
+    net: testnet
     environment: 
       MYSQL_DATABASE: 'db'
       MYSQL_USER: 'user'
