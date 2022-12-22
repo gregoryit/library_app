@@ -27,8 +27,8 @@ for req in sql_request:
     try:
         cursor.execute(req)
 
-    except BaseException:
-        print('error!!!', req)
+    except BaseException as e:
+        print('error!!!', req, e)
 
 
 text = '''Возможности приложения:

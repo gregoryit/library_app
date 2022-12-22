@@ -37,11 +37,13 @@ sql_request = [
     REFERENCES `facilities`(`id`) ON DELETE CASCADE;''',
     '''ALTER TABLE `books_facilities` ADD CONSTRAINT `books_facilities_fk1`
     FOREIGN KEY (`book_id`) REFERENCES `books`(`id`) ON DELETE CASCADE;''',
+    '''ALTER TABLE `books` ADD COLUMN
+    year INT NOT NULL AFTER author;'''
 ]
 
 
 tables = {
-    'books': ('id', 'title', 'author', 'filial_id', 'publisher_id'),
+    'books': ('id', 'title', 'author', 'year', 'filial_id', 'publisher_id'),
     'publishers': ('id', 'name',),
     'facilities': ('id', 'name',),
     'filials': ('id', 'name', 'address',),
