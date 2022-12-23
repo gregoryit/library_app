@@ -18,6 +18,8 @@ services:
     expose:
       - '3306'
     restart: unless-stopped 
+    networks:
+      - opensearch-net
 
 
   app:
@@ -30,8 +32,100 @@ services:
       MYSQL_PASSWORD: 'root'
     volumes:
       - ./src/:/usr/src/app/
-
+    ports:
+      - 8000:8000
     depends_on:
       - database
     stdin_open: true
     tty: true
+    networks:
+      - opensearch-net
+
+
+  # opensearch:
+  #   image: opensearchproject/opensearch:latest
+  #   container_name: opensearch
+  #   environment:
+  #     - discovery.type=single-node
+  #     - bootstrap.memory_lock=true
+  #     - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - "DISABLE_INSTALL_DEMO_CONFIG=true" 
+  #     - "DISABLE_SECURITY_PLUGIN=true" 
+  #     - OPENSEARCH_USERNAME=admin
+  #     - OPENSEARCH_PASSWORD=admin
+  #   ulimits:
+  #     memlock:
+  #       soft: -1 # Set memlock to unlimited (no soft or hard limit)
+  #       hard: -1
+  #     nofile:
+  #       soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+  #       hard: 65536
+  #   volumes:
+  #     - opensearch-data1:/usr/share/opensearch/data # Creates volume called opensearch-data1 and mounts it to the container
+  #   ports:
+  #     - 9200:9200 # REST API
+  #     - 9600:9600 # Performance Analyzer
+  #   networks:
+  #     - opensearch-net
+
+  # fluent-bit:
+  #   container_name: fluent-bit
+  #   image: fluent/fluent-bit
+  #   volumes:
+  #     - ./opensearch/fluent.conf:/fluent-bit/etc/fluent-bit.conf
+  #     - ./src/all.log:/var/log/test.log
+  #   ports:
+  #     - '24224:24224'
+  #     - '24224:24224/udp'
+  #   networks:
+  #     - opensearch-net
+
+  # opensearch-dashboards:
+  #   image: opensearchproject/opensearch-dashboards:latest # Make sure the version of opensearch-dashboards matches the version of opensearch installed on other nodes
+  #   container_name: opensearch-dashboards 
+  #   ports:
+  #     - 5601:5601 # Map host port 5601 to container port 5601
+  #   expose:
+  #     - "5601" # Expose port 5601 for web access to OpenSearch Dashboards
+  #   environment:
+  #     - 'OPENSEARCH_HOSTS=["http://opensearch:9200"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
+  #     - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
+  #   networks:
+  #     - opensearch-net
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/default.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - opensearch-net 
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    depends_on:
+      - app
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - opensearch-net
+    ports:
+      - 9090:9090
+
+networks:
+  opensearch-net:
+
+volumes:
+  opensearch-data1:

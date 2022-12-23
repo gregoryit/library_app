@@ -1,4 +1,17 @@
 from consts import tables
+import logging
+
+
+logging.basicConfig(filename='all.log', encoding='utf-8', level=logging.DEBUG)
+
+
+
+
+from fluent import sender
+from fluent import event
+
+
+logger = sender.FluentSender('app', host='localhost', port=24224)
 
 
 def add_smth_console(cursor):
@@ -22,8 +35,15 @@ def add_smth(cursor, values, ans):
         id_new = cursor.fetchone()[0]
         sql = f'SELECT * FROM {ans} WHERE id = %s'
         cursor.execute(sql, tuple([id_new]))
+        logging.info(f'Добавление записи в {ans} в параметрами {values}')
+        logger.emit('app', {
+                'action': 'add',
+                'table': ans,
+                'values': values
+                })
         return cursor.fetchall()[0]
     except Exception as e:
+        logging.error(f'Добавление записи в {ans} в параметрами {values} не удалось')
         print('Что-то пошло не так')
 
 
@@ -45,8 +65,15 @@ def del_smth(cursor, id_del, ans):
         sql = f'SELECT id FROM {ans} WHERE id = %s'
         cursor.execute(sql, tuple([id_del]))
         result = cursor.fetchall()
+        logging.info(f'Удаление записи в {ans} в id {id_del}')
+        logger.emit('app', {
+                'action': 'del',
+                'table': ans,
+                'id': id_del
+                })
         return result
     except Exception as e:
+        logging.error(f'Удаление записи в {ans} в id {id_del} не удалось')
         print('Что-то пошло не так')
 
 
@@ -72,9 +99,18 @@ def upd_smth(cursor, ans, id_del, col, value):
         cursor.execute(sql, tuple([value, id_del]))
         sql = f'SELECT * FROM {ans} WHERE id = %s'
         cursor.execute(sql, tuple([id_del]))
+        logging.info(f'Изменение записи в {ans} в id {id_del} параметр {col} на значение {value}')
+        logger.emit('app', {
+                'action': 'upd',
+                'table': ans,
+                'id': id_del,
+                'parametr': col,
+                'value': value
+                })
         return cursor.fetchall()[0]
     except Exception as e:
         print('Что-то пошло не так')
+        logging.error(f'Изменение записи в {ans} в id {id_del} параметр {col} на значение {value} не удалось')
 
 
 def many_relations_console(cursor):

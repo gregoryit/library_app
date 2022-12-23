@@ -1,0 +1,31 @@
+INFO:root:Добавление записи
+INFO:root:Добавление записи в filials в параметрами ['name', 'adr']
+INFO:root:Удаление записи
+INFO:root:Удаление записи в books в id 1
+INFO:root:Удаление записи
+INFO:root:Удаление записи в filials в id 3
+INFO:root:Обновление записи
+ERROR:root:Изменение записи в books в id 5 параметр filial_id на значение fqwerfwsf не удалось
+INFO:root:Добавление записи
+ERROR:root:Добавление записи в books в параметрами ['sss'] не удалось
+INFO:root:Добавление записи
+INFO:root:Добавление записи
+INFO:root:Добавление записи
+INFO:root:Добавление записи в books в параметрами ['q', 'w', '1', None, None]
+INFO:root:Удаление записи
+INFO:root:Удаление записи
+INFO:root:Удаление записи в books в id 3
+INFO:root:Добавление записи
+INFO:root:Добавление записи в books в параметрами ['t', 't', '1', None, None]
+INFO:root:Добавление записи
+INFO:root:Добавление записи в books в параметрами ['title', 'author', '2022', None, None]
+INFO:root:Удаление записи
+INFO:root:Удаление записи в books в id 2
+INFO:root:Удаление записи
+INFO:root:Удаление записи в books в id 4
+INFO:root:Обновление записи
+INFO:root:Изменение записи в books в id 1 параметр title на значение new
+INFO:root:Добавление записи
+INFO:root:Добавление записи в filials в параметрами ['name', 'addr']
+INFO:root:Удаление записи
+INFO:root:Удаление записи в filials в id 2
